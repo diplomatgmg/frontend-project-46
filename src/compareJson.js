@@ -2,19 +2,12 @@ const formatKey = (key, operation = ' ') => `${operation} ${key}`;
 
 function sortKeys(keys) {
   return keys.sort((a, b) => {
-    if (a.match(/^[+-]/)) {
-      // eslint-disable-next-line no-param-reassign
-      a = a.slice(2);
-    }
-
-    if (b.match(/^[+-]/)) {
-      // eslint-disable-next-line no-param-reassign
-      b = b.slice(2);
-    }
-
-    return a.localeCompare(b);
+    const cleanA = a.startsWith('+-') ? a.slice(2) : a;
+    const cleanB = b.startsWith('+-') ? b.slice(2) : b;
+    return cleanA.localeCompare(cleanB);
   });
 }
+
 export default function test(json1, json2) {
   const difference = {};
 
