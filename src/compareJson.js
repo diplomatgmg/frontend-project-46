@@ -1,4 +1,6 @@
-const formatKey = (key, operation = ' ') => `${operation} ${key}`;
+import stylish from './stylish.js';
+
+const formatKey = (key, operation) => `${operation} ${key}`;
 
 function sortKeys(keys) {
   return keys.sort((a, b) => {
@@ -8,26 +10,36 @@ function sortKeys(keys) {
   });
 }
 
-export default function test(json1, json2) {
-  const difference = {};
+export default function compareJson(json1, json2) {
+  const recursionCompare = (object1, object2) => {
+    const difference = {};
 
-  const keys = [...new Set([...Object.keys(json1), ...Object.keys(json2)])];
-  const sortedKeys = sortKeys(keys);
+    const keys = [...new Set([...Object.keys(object1), ...Object.keys(object2)])];
+    const sortedKeys = sortKeys(keys);
 
-  sortedKeys.forEach((key) => {
-    if (json1[key] === json2[key]) {
-      const formattedKey = formatKey(key);
-      difference[formattedKey] = json1[key];
-    } else {
-      const newKey = formatKey(key, '+');
-      const oldKey = formatKey(key, '-');
+    sortedKeys.forEach((key) => {
+      if (object1[key] === object2[key]) {
+        difference[key] = object1[key];
+      } else if (typeof object1[key] === 'object' && typeof object2[key] === 'object') {
+        difference[key] = recursionCompare(object1[key], object2[key]);
+      } else {
+        const newKey = formatKey(key, '+');
+        const oldKey = formatKey(key, '-');
 
-      difference[oldKey] = json1[key];
-      difference[newKey] = json2[key];
-    }
-  });
+        if (object1[key] !== undefined) {
+          difference[oldKey] = object1[key];
+        }
 
-  return JSON.stringify(difference, null, 2)
-    .replace(/"/g, '')
-    .replace(/,/g, '');
+        if (object2[key] !== undefined) {
+          difference[newKey] = object2[key];
+        }
+      }
+    });
+
+    return difference;
+  };
+
+  const objDifference = recursionCompare(json1, json2);
+
+  return stylish(objDifference);
 }
