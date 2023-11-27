@@ -1,7 +1,3 @@
-import stylish from './stylish.js';
-
-const formatKey = (key, operation) => `${operation} ${key}`;
-
 function sortKeys(keys) {
   return keys.sort((a, b) => {
     const cleanA = a.startsWith('+-') ? a.slice(2) : a;
@@ -10,36 +6,27 @@ function sortKeys(keys) {
   });
 }
 
-export default function compareJson(json1, json2) {
-  const recursionCompare = (object1, object2) => {
-    const difference = {};
+export default function generateDiff(obj1, obj2) {
+  const keys = [...new Set([...Object.keys(obj1), ...Object.keys(obj2)])];
+  const sortedKeys = sortKeys(keys);
 
-    const keys = [...new Set([...Object.keys(object1), ...Object.keys(object2)])];
-    const sortedKeys = sortKeys(keys);
+  return sortedKeys.reduce((acc, key) => {
+    if (obj1[key] === undefined) {
+      acc[key] = { value: obj2[key], type: 'added' };
+    } else if (obj2[key] === undefined) {
+      acc[key] = { value: obj1[key], type: 'removed' };
+    } else if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
+      acc[key] = { type: 'nested', children: generateDiff(obj1[key], obj2[key]) };
+    } else if (obj1[key] === obj2[key]) {
+      acc[key] = { value: obj1[key], type: 'unchanged' };
+    } else {
+      acc[key] = {
+        value: obj2[key],
+        oldValue: obj1[key],
+        type: 'changed',
+      };
+    }
 
-    sortedKeys.forEach((key) => {
-      if (object1[key] === object2[key]) {
-        difference[key] = object1[key];
-      } else if (typeof object1[key] === 'object' && typeof object2[key] === 'object') {
-        difference[key] = recursionCompare(object1[key], object2[key]);
-      } else {
-        const newKey = formatKey(key, '+');
-        const oldKey = formatKey(key, '-');
-
-        if (object1[key] !== undefined) {
-          difference[oldKey] = object1[key];
-        }
-
-        if (object2[key] !== undefined) {
-          difference[newKey] = object2[key];
-        }
-      }
-    });
-
-    return difference;
-  };
-
-  const objDifference = recursionCompare(json1, json2);
-
-  return stylish(objDifference);
+    return acc;
+  }, {});
 }
