@@ -3,11 +3,9 @@ import genDiff from '../index.js';
 
 const fixturesDir = path.join(__dirname, '..', '__fixtures__');
 
-test('diff json files test', () => {
-  const filePath1 = path.join(fixturesDir, 'file1.json');
-  const filePath2 = path.join(fixturesDir, 'file2.json');
+const makeFilePath = (fileName) => path.join(fixturesDir, fileName);
 
-  const expectData = `{
+const expectData = `{
   - follow: false
     host: hexlet.io
   - proxy: 123.234.53.22
@@ -15,27 +13,22 @@ test('diff json files test', () => {
   + timeout: 20
   + verbose: true
 }`;
+
+test('diff json files test', () => {
+  const filePath1 = makeFilePath('file1.json');
+  const filePath2 = makeFilePath('file2.json');
 
   expect(genDiff(filePath1, filePath2)).toEqual(expectData);
 });
 
 test('diff yaml files test', () => {
-  const filePath1 = path.join(fixturesDir, 'file1.yaml');
-  const filePath2 = path.join(fixturesDir, 'file2.yaml');
-
-  const expectData = `{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
-}`;
+  const filePath1 = makeFilePath('file1.yaml');
+  const filePath2 = makeFilePath('file2.yaml');
 
   expect(genDiff(filePath1, filePath2)).toEqual(expectData);
 });
 
 test('unsupported file test', () => {
-  const filePath = path.join(fixturesDir, 'unsupported.txt');
+  const filePath = makeFilePath('unsupported.txt');
   expect(() => genDiff(filePath, filePath)).toThrow(Error);
 });
