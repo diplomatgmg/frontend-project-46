@@ -4,7 +4,8 @@
   "description": "[![Actions Status](https://github.com/diplomatgmg/frontend-project-46/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/diplomatgmg/frontend-project-46/actions)",
   "type": "module",
   "dependencies": {
-    "commander": "^11.1.0"
+    "commander": "^11.1.0",
+    "js-yaml": "^4.1.0"
   },
   "scripts": {
     "test": "npx jest",
@@ -31,6 +32,7 @@
     "eslint": "^8.54.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.0",
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "js-yaml": "^4.1.0"
   }
 }
