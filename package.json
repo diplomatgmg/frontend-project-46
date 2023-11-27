@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/diplomatgmg/frontend-project-46/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/diplomatgmg/frontend-project-46/actions)",
   "type": "module",
+  "main": "index.js",
   "dependencies": {
     "commander": "^11.1.0",
     "js-yaml": "^4.1.0"
