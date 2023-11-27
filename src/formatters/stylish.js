@@ -11,6 +11,7 @@ export default function stylish(diff) {
       const minusKey = `- ${key}`;
       const plusKey = `+ ${key}`;
 
+      // eslint-disable-next-line default-case
       switch (type) {
         case 'nested':
           diffObj[key] = makeDifference(children);
@@ -27,8 +28,6 @@ export default function stylish(diff) {
           break;
         case 'unchanged':
           diffObj[key] = value;
-          break;
-        default:
           break;
       }
     });

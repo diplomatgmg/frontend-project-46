@@ -3,10 +3,10 @@ import genDiff from '../index.js';
 
 const fixturesDir = path.join(__dirname, '..', '__fixtures__');
 
-test('diff json files test', () => {
-  const filePath1 = path.join(fixturesDir, 'nestedFile1.json');
-  const filePath2 = path.join(fixturesDir, 'nestedFile2.json');
+const filePath1 = path.join(fixturesDir, 'nestedFile1.json');
+const filePath2 = path.join(fixturesDir, 'nestedFile2.json');
 
+test('diff stylish json files test', () => {
   const expectData = `{
     common: {
       + follow: false
@@ -53,4 +53,20 @@ test('diff json files test', () => {
 }`;
 
   expect(genDiff(filePath1, filePath2)).toEqual(expectData);
+});
+
+test('diff plain json files test', () => {
+  const expectData = `Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]`;
+
+  expect(genDiff(filePath1, filePath2, 'plain')).toEqual(expectData);
 });
