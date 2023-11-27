@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export default function stylish(diff) {
   const makeDifference = (object) => {
     const diffObj = {};

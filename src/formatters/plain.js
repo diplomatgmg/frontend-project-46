@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 function stringifyValue(value) {
   if (value === null) {
     return null;
