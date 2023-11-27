@@ -22,3 +22,6 @@ gendiff -f formatName file1.json file2.yml
 
 ## Flat comparison example
 <a href="https://asciinema.org/a/YUIYbxZMBTjQiU6PLPcyBfhCP" target="_blank"><img src="https://asciinema.org/a/YUIYbxZMBTjQiU6PLPcyBfhCP.svg" /></a>
+
+## Nested comparison example
+<a href="https://asciinema.org/a/VRhRVKBPNSVUaOuImwY5dZNUC" target="_blank"><img src="https://asciinema.org/a/VRhRVKBPNSVUaOuImwY5dZNUC.svg" /></a>
