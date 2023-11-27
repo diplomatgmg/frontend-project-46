@@ -4,6 +4,7 @@ import fs from 'fs';
 import compareJson from './compareJson.js';
 import stylish from './formatters/stylish.js';
 import plain from './formatters/plain.js';
+import json from './formatters/json.js';
 
 const readFile = (filePath) => fs.readFileSync(filePath, 'utf8');
 
@@ -35,6 +36,8 @@ export default (filePath1, filePath2, format) => {
   switch (format) {
     case 'plain':
       return plain(difference);
+    case 'json':
+      return json(difference);
     default:
       return stylish(difference);
   }

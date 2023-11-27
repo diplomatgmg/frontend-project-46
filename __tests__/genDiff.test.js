@@ -92,6 +92,17 @@ Property 'group3' was added with value: [complex value]`;
   });
 });
 
+describe('diff json format files test', () => {
+  const expectedData = '{"common":{"type":"nested","children":{"follow":{"value":false,"type":"added"},"setting1":{"value":"Value 1","type":"unchanged"},"setting2":{"value":200,"type":"removed"},"setting3":{"value":null,"oldValue":true,"type":"changed"},"setting4":{"value":"blah blah","type":"added"},"setting5":{"value":{"key5":"value5"},"type":"added"},"setting6":{"type":"nested","children":{"doge":{"type":"nested","children":{"wow":{"value":"so much","oldValue":"","type":"changed"}}},"key":{"value":"value","type":"unchanged"},"ops":{"value":"vops","type":"added"}}}}},"group1":{"type":"nested","children":{"baz":{"value":"bars","oldValue":"bas","type":"changed"},"foo":{"value":"bar","type":"unchanged"},"nest":{"value":"str","oldValue":{"key":"value"},"type":"changed"}}},"group2":{"value":{"abc":12345,"deep":{"id":45}},"type":"removed"},"group3":{"value":{"deep":{"id":{"number":45}},"fee":100500},"type":"added"}}';
+
+  test('diff json json', () => {
+    const filePath1 = path.join(fixturesDir, 'file1.json');
+    const filePath2 = path.join(fixturesDir, 'file2.json');
+
+    expect(genDiff(filePath1, filePath2, 'json')).toEqual(expectedData);
+  });
+});
+
 test('unsupported file extension', () => {
   const filePath1 = path.join(fixturesDir, 'unsupported.txt');
   const filePath2 = path.join(fixturesDir, 'unsupported.txt');
