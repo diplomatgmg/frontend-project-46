@@ -3,11 +3,8 @@ import genDiff from '../index.js';
 
 const fixturesDir = path.join(__dirname, '..', '__fixtures__');
 
-const filePath1 = path.join(fixturesDir, 'nestedFile1.json');
-const filePath2 = path.join(fixturesDir, 'nestedFile2.json');
-
-test('diff stylish json files test', () => {
-  const expectData = `{
+describe('diff stylish files test', () => {
+  const expectedData = `{
     common: {
       + follow: false
         setting1: Value 1
@@ -52,11 +49,23 @@ test('diff stylish json files test', () => {
     }
 }`;
 
-  expect(genDiff(filePath1, filePath2)).toEqual(expectData);
+  test('diff json', () => {
+    const filePath1 = path.join(fixturesDir, 'file1.json');
+    const filePath2 = path.join(fixturesDir, 'file2.json');
+
+    expect(genDiff(filePath1, filePath2)).toEqual(expectedData);
+  });
+
+  test('diff yaml', () => {
+    const filePath1 = path.join(fixturesDir, 'file1.yaml');
+    const filePath2 = path.join(fixturesDir, 'file2.yaml');
+
+    expect(genDiff(filePath1, filePath2)).toEqual(expectedData);
+  });
 });
 
-test('diff plain json files test', () => {
-  const expectData = `Property 'common.follow' was added with value: false
+describe('diff plain files test', () => {
+  const expectedData = `Property 'common.follow' was added with value: false
 Property 'common.setting2' was removed
 Property 'common.setting3' was updated. From true to null
 Property 'common.setting4' was added with value: 'blah blah'
@@ -68,5 +77,24 @@ Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`;
 
-  expect(genDiff(filePath1, filePath2, 'plain')).toEqual(expectData);
+  test('diff stylish json', () => {
+    const filePath1 = path.join(fixturesDir, 'file1.json');
+    const filePath2 = path.join(fixturesDir, 'file2.json');
+
+    expect(genDiff(filePath1, filePath2, 'plain')).toEqual(expectedData);
+  });
+
+  test('diff stylish yaml', () => {
+    const filePath1 = path.join(fixturesDir, 'file1.yaml');
+    const filePath2 = path.join(fixturesDir, 'file2.yaml');
+
+    expect(genDiff(filePath1, filePath2, 'plain')).toEqual(expectedData);
+  });
+});
+
+test('unsupported file extension', () => {
+  const filePath1 = path.join(fixturesDir, 'unsupported.txt');
+  const filePath2 = path.join(fixturesDir, 'unsupported.txt');
+
+  expect(() => genDiff(filePath1, filePath2)).toThrow();
 });
