@@ -1,6 +1,7 @@
 {
   "transform": {
-    "^.+\\.tsx?$": "ts-jest"
+    "^.+\\.(ts|tsx)$": "ts-jest",
+    "^.+\\.(js|jsx)$": "babel-jest"
   },
   "testEnvironment": "node",
   "moduleFileExtensions": [
@@ -10,6 +11,5 @@
     "jsx",
     "json",
     "node"
-  ],
-  "testRegex": "/__tests__/.*\\.(test|spec)?\\.(ts|tsx)$"
+  ]
 }
