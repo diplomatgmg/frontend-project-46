@@ -1,6 +1,6 @@
-name: Run tests and publish code coverage
+name: Tests passed
 
-on: [push]
+on: [ push ]
 
 jobs:
   test:
