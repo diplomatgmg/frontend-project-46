@@ -13,55 +13,44 @@ function getFilePath (fileName: string): string {
 }
 
 describe('Diff stylish files test', () => {
-  const expectedData = loadFixture('expectedStylish')
+  const filePathJson1 = getFilePath('file1.json')
+  const filePathJson2 = getFilePath('file2.json')
+  const filePathYaml1 = getFilePath('file1.yaml')
+  const filePathYaml2 = getFilePath('file2.yaml')
 
-  test('Diff JSON', () => {
-    const filePath1 = getFilePath('file1.json')
-    const filePath2 = getFilePath('file2.json')
+  const expectedStylishData = loadFixture('expectedStylish')
+  const expectedPlainData = loadFixture('expectedPlain')
+  const expectedJsonData = loadFixture('expectedJson')
 
-    expect(genDiff(filePath1, filePath2)).toEqual(expectedData)
+  describe('Diff stylish files test', () => {
+    test('Diff stylish JSON', () => {
+      expect(genDiff(filePathJson1, filePathJson2)).toEqual(expectedStylishData)
+    })
+
+    test('Diff stylish YAML', () => {
+      expect(genDiff(filePathYaml1, filePathYaml2)).toEqual(expectedStylishData)
+    })
   })
 
-  test('Diff YAML', () => {
-    const filePath1 = getFilePath('file1.yaml')
-    const filePath2 = getFilePath('file2.yaml')
+  describe('Diff plain files test', () => {
+    test('Diff plain JSON', () => {
+      expect(genDiff(filePathJson1, filePathJson2, 'plain')).toEqual(expectedPlainData)
+    })
 
-    expect(genDiff(filePath1, filePath2)).toEqual(expectedData)
-  })
-})
-
-describe('Diff plain files test', () => {
-  const expectedData = loadFixture('expectedPlain')
-
-  test('Diff stylish JSON', () => {
-    const filePath1 = getFilePath('file1.json')
-    const filePath2 = getFilePath('file2.json')
-
-    expect(genDiff(filePath1, filePath2, 'plain')).toEqual(expectedData)
+    test('Diff plain YAML', () => {
+      expect(genDiff(filePathYaml1, filePathYaml2, 'plain')).toEqual(expectedPlainData)
+    })
   })
 
-  test('Diff stylish YAML', () => {
-    const filePath1 = getFilePath('file1.yaml')
-    const filePath2 = getFilePath('file2.yaml')
-
-    expect(genDiff(filePath1, filePath2, 'plain')).toEqual(expectedData)
-  })
-})
-
-describe('Diff JSON format files test', () => {
-  const expectedData = loadFixture('expectedJson')
-
-  test('Diff JSON JSON', () => {
-    const filePath1 = getFilePath('file1.json')
-    const filePath2 = getFilePath('file2.json')
-
-    expect(genDiff(filePath1, filePath2, 'json')).toEqual(expectedData)
+  describe('Diff json format files test', () => {
+    test('Diff json JSON', () => {
+      expect(genDiff(filePathJson1, filePathJson2, 'json')).toEqual(expectedJsonData)
+    })
   })
 })
 
 test('Unsupported file extension', () => {
-  const filePath1 = getFilePath('unsupported.txt')
-  const filePath2 = getFilePath('unsupported.txt')
+  const filePathUnsupported = getFilePath('unsupported.txt')
 
-  expect(() => genDiff(filePath1, filePath2)).toThrow()
+  expect(() => genDiff(filePathUnsupported, filePathUnsupported)).toThrow()
 })
