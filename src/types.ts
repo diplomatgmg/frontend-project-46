@@ -5,4 +5,4 @@ export type DiffNode =
   | { type: 'removed'; value: ValueTypes }
   | { type: 'nested'; children: Record<string, DiffNode> }
   | { type: 'unchanged'; value: ValueTypes }
-  | { type: 'changed'; value: ValueTypes; oldValue: ValueTypes };
+  | { type: 'changed'; value: ValueTypes; oldValue: ValueTypes }
